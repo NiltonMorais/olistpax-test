@@ -33,4 +33,9 @@ class ProductService
     {
         return $this->repository->update($model, $request->all());
     }
+
+    public function delete(Product $product) : bool
+    {
+        return $this->repository->delete($product);
+    }
 }

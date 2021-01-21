@@ -7,7 +7,6 @@ use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Services\ProductService;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -47,8 +46,12 @@ class ProductController extends Controller
         return response()->json(['message' => 'Error updating record!'], 500);
     }
 
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        if($this->service->delete($product)){
+            return response()->json([], 204);
+        }
+
+        return response()->json(['message' => 'Error deleting record!'], 500);
     }
 }

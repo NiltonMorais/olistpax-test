@@ -31,4 +31,9 @@ class ProductRepository
     {
         return $model->update($data);
     }
+
+    public function delete(Product $product) : bool
+    {
+        return $product->delete();
+    }
 }
