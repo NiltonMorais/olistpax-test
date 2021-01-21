@@ -3,38 +3,34 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use App\Repositories\ProductRepository;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     /**
-     * @var ProductRepository
+     * @var ProductService
      */
-    private $repository;
+    private $service;
 
-    public function __construct(ProductRepository $repository)
+    public function __construct(ProductService $service)
     {
-        $this->repository = $repository;
+        $this->service = $service;
     }
 
     public function index()
     {
-        $data = $this->repository->all();
-
+        $data = $this->service->getAll();
         return ProductResource::collection($data);
     }
 
-    public function create()
+    public function store(ProductRequest $request)
     {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
+        $data = $this->service->create($request);
+        return new ProductResource($data);
     }
 
     public function show(Product $product)
@@ -42,14 +38,13 @@ class ProductController extends Controller
         return new ProductResource($product);
     }
 
-    public function edit($id)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
-    }
+        if($this->service->update($product, $request)){
+            return response()->json(['message' => 'Updated successfully!']);
+        }
 
-    public function update(Request $request, $id)
-    {
-        //
+        return response()->json(['message' => 'Error updating record!'], 500);
     }
 
     public function destroy($id)

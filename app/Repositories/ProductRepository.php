@@ -21,4 +21,14 @@ class ProductRepository
     {
         return $this->model->with('category')->get();
     }
+
+    public function create(array $data) : Product
+    {
+        return $this->model->create($data);
+    }
+
+    public function update(Product $model, array $data) : bool
+    {
+        return $model->update($data);
+    }
 }
