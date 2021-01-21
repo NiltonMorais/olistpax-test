@@ -19,6 +19,6 @@ class ProductRepository
 
     public function all() : Collection
     {
-        return $this->model->all();
+        return $this->model->with('category')->get();
     }
 }
